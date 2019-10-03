@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menekki_0.3", "Menekki_0.3\Menekki_0.3.csproj", "{FF01CDE2-DE18-408B-87FA-3466964453CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF01CDE2-DE18-408B-87FA-3466964453CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF01CDE2-DE18-408B-87FA-3466964453CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF01CDE2-DE18-408B-87FA-3466964453CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF01CDE2-DE18-408B-87FA-3466964453CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
