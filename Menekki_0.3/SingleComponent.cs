@@ -10,17 +10,25 @@ namespace Menekki_0._3
     {
         /* THIS CLASS IS TO
             - CREATE NEW SINGLE COMPONENT
-            - READ COMPONENTS FROM FILE
+            - PARSE COMPONENTS saved into a file and then make them as object
         */
 
 
         // VARIABLES
         // each component must have id, name, pcs and price
-        static int _id = 0;
+        private static int _id = 0; //for
+        public int Id { get { return _id; } set { _id = value; } }
+
         private string _name;
+        public string Name { get { return _name; } set { _name = value; } }
+
         private int _pcs;
+        public int Pcs { get { return _pcs; } set { _pcs = value; } }
+
         private double _price;
-      
+        public double Price { get { return _price; } set { _price = value; } }
+
+
 
         //CONSTRUCTOR
         public SingleComponent()
@@ -28,6 +36,12 @@ namespace Menekki_0._3
             AddNewComponent();
         }
 
+        //CONSTRUCTOR #2, for components saved in a file
+        public SingleComponent(string lineFromFile)
+        {
+            //Parse the read line from the file
+            ParseComponent(lineFromFile);
+        }
 
 
         //METHODS
@@ -44,29 +58,28 @@ namespace Menekki_0._3
             _id++;
 
             //ToString("F") ensures 2 decimals are written
-            string newLine = $"{_id}, {_name}, {_pcs}, {_price.ToString("F")}";
-
-            /*
+            string newLine = $"{_id} {_name} {_pcs} {_price.ToString("F")}";
+            
             //SAVE the component
             using (StreamWriter comp = File.AppendText($"komponentit.txt"))
             {
                 comp.Write("\n" + newLine);
             }
-            */
+            
         }
 
-        //READ COMPONENTS FROM FILE
-        public string ReadFromFile()
+        public void ParseComponent(string linetoparse)
         {
-            //declare helper for file reading
-            string line;
-            //open the file to read components from
-            StreamReader file = new StreamReader($"komponentit.txt");
-            while ((line = file.ReadLine()) != null)
-            {
-                return line;
-            }
-            return line;
+            string[] splitted = linetoparse.Split(' ');
+                //example of the lines in file: 1 ruuvi 16 1.50
+                _id = int.Parse(splitted[0]);
+                _name = splitted[1];
+                _pcs = int.Parse(splitted[2]);
+                _price = double.Parse(splitted[3]);
+            
         }
+
+        
+
     }
 }

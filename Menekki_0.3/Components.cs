@@ -13,7 +13,7 @@ namespace Menekki_0._3
     {
         //THIS CLASS IS TO KEEP A LIST OF ALL COMPONENTS IN STOCK
         // and this is the list:
-        List<object> ComponentList = new List<object>();
+        List<SingleComponent> ComponentList = new List<SingleComponent>();
 
 
         //CONSTRUCTOR
@@ -23,30 +23,52 @@ namespace Menekki_0._3
             if (!ComponentList.Any())
             {
                 // if empty, insert data from file
-                Console.WriteLine("Luetaan listaan tiedoston sisältö. ");
-                ComponentList.Add(ReadComponent());
-            }
-            else
-            {
-                // if not empty, append new component
-                Console.WriteLine("Lisätään uusi komponentti:");
-                ComponentList.Add(NewComponent());
+                ReadComponent(ComponentList);
             }
         }
 
         //METHODS
-        static object ReadComponent()
+        //READ COMPONENTS FROM FILE
+        public static void ReadComponent(List<SingleComponent> ComponentList)
+        { 
+            // helper for file reading
+            string line;
+            // open the file to read components from
+            StreamReader file = new StreamReader($"komponentit.txt");
+            // read all lines from file
+            while ((line = file.ReadLine()) != null)
+            {
+                //make new SingleComponent of each line
+                ComponentList.Add(new SingleComponent(line));
+            }
+            
+            
+        }
+        public void ListComponents()
         {
-            //SHOULD read components from a file NOT WORKING YET
-            SingleComponent ReadComp = new SingleComponent();
-            return ReadComp;
+            foreach (var c in ComponentList)
+            {
+                //c.Name = "jee";
+                //string nimi = c.Name;
+
+                Console.WriteLine($"ID {c.Id}, {c.Name}, {c.Pcs} kpl, á {c.Price.ToString("F")} € (yht. {(c.Pcs*c.Price).ToString("F")} €)");
+            }
         }
 
-        static object NewComponent()
+        public void NewComponent()
         {
-            //creates NEW component
-            SingleComponent NewComp = new SingleComponent();
-            return NewComp;
+            //creates NEW component into the list
+            ComponentList.Add(new SingleComponent());
+        }
+
+        public void Worth()
+        {
+            double sum = 0;
+            foreach (var c in ComponentList)
+            {
+                sum += c.Price * c.Pcs;
+            }
+            Console.Write($"Varaston arvo {sum.ToString("F")} €");
         }
         
     }
