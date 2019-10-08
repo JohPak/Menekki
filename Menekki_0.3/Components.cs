@@ -48,10 +48,9 @@ namespace Menekki_0._3
         {
             foreach (var c in ComponentList)
             {
-                //c.Name = "jee";
-                //string nimi = c.Name;
-
-                Console.WriteLine($"ID {c.Id}, {c.Name}, {c.Pcs} kpl, á {c.Price.ToString("F")} € (yht. {(c.Pcs*c.Price).ToString("F")} €)");
+                // print out list of items like this:
+                // Id  10. prikka...........55 kpl, á 0.25 € (yht. 13.75 €)
+                Console.WriteLine($"Id {c.CompId,3}. {c.Name.PadRight(20, '.')} {c.Pcs,3} kpl, á {c.Price.ToString("F"),6} € (yht. {(c.Pcs*c.Price).ToString("F"),7} €)");
             }
         }
 
@@ -59,6 +58,39 @@ namespace Menekki_0._3
         {
             //creates NEW component into the list
             ComponentList.Add(new SingleComponent());
+        }
+
+        public void DeleteComponent(int idUserWantsToDelete)
+        {
+            // i found out deleting instances is tricky thing to do, so i do this instead:
+            // if user input matches component's id
+            // create a text line of that component (as in komponentit.txt)
+            // move all lines in temporary file, except the one to be removed
+            // then save the temporary file back in komponentit.txt
+            string lineToRemove = "";
+            foreach (var c in ComponentList)
+            {
+                if (idUserWantsToDelete == c.CompId)
+                {
+                    lineToRemove = $"{c.CompId} {c.Name} {c.Pcs} {c.Price.ToString("F")}";
+                    var tempFile = Path.GetTempFileName();
+                    var linesToKeep = File.ReadLines($"komponentit.txt").Where(l => l != lineToRemove);
+                    File.WriteAllLines(tempFile, linesToKeep);
+                    File.Delete($"komponentit.txt");
+                    File.Move(tempFile, $"komponentit.txt");
+                    Console.WriteLine($"---> Id: {lineToRemove} on poistettu.\n");
+                }
+                //else if (idUserWantsToDelete != c.CompId && lineToRemove == "")
+                //{
+                //    //TÄSSÄ ON JOTAKI MÄTÄÄ
+                //    Console.WriteLine("Antamasi id-numero ei täsmää.\n");
+                //    break;
+                //}
+            }
+            // Build ComponentList again to make sure to have data up to date
+            ComponentList.Clear();
+            ReadComponent(ComponentList);
+            ListComponents();
         }
 
         public void Worth()

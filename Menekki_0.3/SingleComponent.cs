@@ -16,8 +16,11 @@ namespace Menekki_0._3
 
         // VARIABLES
         // each component must have id, name, pcs and price
-        private static int _id = 0; //for
+        private static int _id = 0;
         public int Id { get { return _id; } set { _id = value; } }
+
+        private int _compId = 0;
+        public int CompId { get { return _compId; } set { _compId = value; } }
 
         private string _name;
         public string Name { get { return _name; } set { _name = value; } }
@@ -28,6 +31,9 @@ namespace Menekki_0._3
         private double _price;
         public double Price { get { return _price; } set { _price = value; } }
 
+        //malli propertyn käytöstä
+        //c.Name = "jee";
+        //string nimi = c.Name;
 
 
         //CONSTRUCTOR
@@ -48,14 +54,31 @@ namespace Menekki_0._3
 
         public void AddNewComponent()
         {
-            Console.WriteLine("Anna komponentin nimi: ");
-            _name = Console.ReadLine();
-            Console.WriteLine("Anna kappalemäärä: ");
-            _pcs = int.Parse(Console.ReadLine());
-            Console.WriteLine("Anna kappalehinta: ");
-            _price = double.Parse(Console.ReadLine());
-            //component id grows with every component created
+            bool isNumber = false; // validation helper
+
+            do // ask NAME until input is not empty
+            {
+                Console.WriteLine("Anna komponentin nimi: (älä käytä välilyöntejä) ");
+                _name = Console.ReadLine();
+            } while (_name == "" || _name.Contains(" "));
+
+            do // ask PCS until input is number and > 0
+            {
+                Console.WriteLine("Anna kappalemäärä: ");
+                isNumber = int.TryParse(Console.ReadLine(), out _pcs);
+            } while (!isNumber || _pcs <= 0);
+
+            do // ask PRICE until input is number and > 0
+            {
+                Console.WriteLine("Anna kappalehinta €: (0.00) ");
+                isNumber = double.TryParse(Console.ReadLine(), out _price);
+            } while (!isNumber || _price <= 0);
+
+            // check last saved id on the file and then add 1 to it.
+            string[] getId = (File.ReadLines($"komponentit.txt").Last()).Split(' ');
+            _id = int.Parse(getId[0]);
             _id++;
+            CompId = _id;
 
             //ToString("F") ensures 2 decimals are written
             string newLine = $"{_id} {_name} {_pcs} {_price.ToString("F")}";
@@ -63,7 +86,8 @@ namespace Menekki_0._3
             //SAVE the component
             using (StreamWriter comp = File.AppendText($"komponentit.txt"))
             {
-                comp.Write("\n" + newLine);
+                //comp.Write("\n" + newLine);
+                comp.Write(newLine + "\n");
             }
             
         }
@@ -72,12 +96,14 @@ namespace Menekki_0._3
         {
             string[] splitted = linetoparse.Split(' ');
                 //example of the lines in file: 1 ruuvi 16 1.50
-                _id = int.Parse(splitted[0]);
+                _compId = int.Parse(splitted[0]);
                 _name = splitted[1];
                 _pcs = int.Parse(splitted[2]);
                 _price = double.Parse(splitted[3]);
             
         }
+
+        
 
         
 

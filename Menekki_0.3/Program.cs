@@ -33,7 +33,7 @@ namespace Menekki_0._3 //5.10.2019
                 switch (choice.Key)
                 {
 
-//MENU ACTIONS START HERE
+//MENU ACTIONS START HERE 
 /*****************************************************/
 
         case ConsoleKey.D1: // COMPONENTS
@@ -43,6 +43,7 @@ namespace Menekki_0._3 //5.10.2019
             // keeps looping submenu until user exits to main menu
             do
             {
+                //MAIN MENU
                 Console.WriteLine("KOMPONENTIT");
                 Console.WriteLine("1. Listaa");
                 Console.WriteLine("2. Lisää uusi");
@@ -56,23 +57,29 @@ namespace Menekki_0._3 //5.10.2019
                 switch (subChoice)
                 {
                     case ConsoleKey.D1:
-                        Console.Clear();
-                        Console.WriteLine("Listataan komponentit");
+                            Console.Clear();
+                            Console.WriteLine("Listataan komponentit");
                             Console.WriteLine();
                             AllComponents.ListComponents();
                             Console.WriteLine();
                             AllComponents.Worth();
                             Console.WriteLine("\n");
-
-                                    break;
+                        break;
                     case ConsoleKey.D2:
-                        Console.WriteLine("Lisätään komponentti");
+                            Console.Clear();
+                            Console.WriteLine("Lisätään komponentti");
                             AllComponents.NewComponent();
                             Console.WriteLine("\n");
                         break;
                     case ConsoleKey.D3:
-                        Console.WriteLine("Poista komponentti");
-                          //AllComponents.DeleteComponent();
+                            Console.Clear();
+                            Console.WriteLine("Poista komponentti");
+                            Console.WriteLine("\n");
+                            AllComponents.ListComponents();
+                            Console.WriteLine("\n");
+                            Console.WriteLine("Anna poistettavan komponentin ID:");
+                            AllComponents.DeleteComponent(int.Parse(Console.ReadLine()));
+                            Console.WriteLine("\n");
                         break;
                     case ConsoleKey.D4:
                             //AllComponents.Worth();
@@ -135,15 +142,9 @@ namespace Menekki_0._3 //5.10.2019
             break;
 
 
-        }
-
+                }
             }
         }
-
-
-
-
-
     }
 }
 
