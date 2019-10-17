@@ -4,7 +4,7 @@ using System.IO;
 // to use lists
 using System.Collections.Generic;
 
-namespace Menekki_0._3 //5.10.2019
+namespace Menekki_0._3 //8.10.2019
 {
     class Program
     {
@@ -48,7 +48,7 @@ namespace Menekki_0._3 //5.10.2019
                 Console.WriteLine("1. Listaa");
                 Console.WriteLine("2. Lisää uusi");
                 Console.WriteLine("3. Poista");
-                Console.WriteLine("4. Tähän jotain");
+                Console.WriteLine("4. Muokkaa");
                 Console.WriteLine("5. Päävalikkoon");
 
 
@@ -61,8 +61,6 @@ namespace Menekki_0._3 //5.10.2019
                             Console.WriteLine("Listataan komponentit");
                             Console.WriteLine();
                             AllComponents.ListComponents();
-                            Console.WriteLine();
-                            AllComponents.Worth();
                             Console.WriteLine("\n");
                         break;
                     case ConsoleKey.D2:
@@ -74,16 +72,13 @@ namespace Menekki_0._3 //5.10.2019
                     case ConsoleKey.D3:
                             Console.Clear();
                             Console.WriteLine("Poista komponentti");
-                            Console.WriteLine("\n");
-                            AllComponents.ListComponents();
-                            Console.WriteLine("\n");
-                            Console.WriteLine("Anna poistettavan komponentin ID:");
-                            AllComponents.DeleteComponent(int.Parse(Console.ReadLine()));
-                            Console.WriteLine("\n");
+                            AllComponents.DeleteComponent();
                         break;
                     case ConsoleKey.D4:
-                            //AllComponents.Worth();
+                            Console.Clear();
+                            Console.WriteLine("Valitse muokattava komponentti (id) ");
                             Console.WriteLine("\n");
+                            AllComponents.ListComponents();
                         break;
                     case ConsoleKey.D5:
                         Console.Clear();
