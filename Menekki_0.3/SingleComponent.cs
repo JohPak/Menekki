@@ -13,7 +13,6 @@ namespace Menekki_0._3
     {
         /* THIS CLASS IS TO
             - CREATE NEW SINGLE COMPONENT
-            - PARSE COMPONENTS saved into a file and then make them as object
         */
 
 
@@ -21,9 +20,6 @@ namespace Menekki_0._3
         // each component must have id, name, pcs and price
         private int _id = 0;
         public int Id { get { return _id; } set { _id = value; } }
-
-        //private int _compId = 0;
-        //public int CompId { get { return _compId; } set { _compId = value; } }
 
         private string _name;
         public string Name { get { return _name; } set { _name = value; } }
