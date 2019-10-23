@@ -85,7 +85,7 @@ namespace Menekki_0._3
 
         public void DeleteComponent() // deletes component 
         {
-            Console.WriteLine("\n");
+            Console.WriteLine();
             ListComponents();
 
             if (!ComponentList.Any())
@@ -94,7 +94,7 @@ namespace Menekki_0._3
             }
             else
             {
-                Console.WriteLine("Anna poistettavan komponentin ID:");
+                Console.WriteLine("\nAnna poistettavan komponentin ID:");
                 string userInput = Console.ReadLine();
                 int removableId;
 
@@ -105,6 +105,7 @@ namespace Menekki_0._3
                     // check if user input is between id's stored in ComponentList
                     if (removableId >= ComponentList[0].Id && removableId <= ComponentList[ComponentList.Count() - 1].Id)
                     {
+                        Console.Clear();
                         Console.WriteLine($"--> {ComponentList.Find(SingleComponent => SingleComponent.Id == removableId).Name} on poistettu.");
                         Console.WriteLine();
 
@@ -202,7 +203,7 @@ namespace Menekki_0._3
                     // Saving into xml-file
                     XmlSerializer writer = new XmlSerializer(ComponentList.GetType());
 
-                    System.IO.FileStream file = System.IO.File.Create(pathAndFilename);
+                    FileStream file = File.Create(pathAndFilename);
 
                     writer.Serialize(file, ComponentList);
                     file.Close();
@@ -259,6 +260,7 @@ namespace Menekki_0._3
             catch (Exception ex)
             {
                 //Console.WriteLine(ex.Message);
+                // writes line of deleted component on red color
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write($"Komponentti on poistettu (id {id}) \n");
                 Console.ResetColor();

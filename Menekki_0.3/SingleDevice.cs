@@ -15,7 +15,7 @@ namespace Menekki_0._3
         public string Name { get { return _name; } set { _name = value; } }
 
         // this holds all components a device is made of (component's id and pcs)
-        // list is made with it's own class, so it could store two variables per cell
+        // list is made with it's own class (written end of this file), so it could store two variables per cell
         public List<IdAndAmount> DeviceComps = new List<IdAndAmount>(); 
 
         // _components are being brought as a parameter from devices-class
@@ -25,6 +25,7 @@ namespace Menekki_0._3
         //CONSTRUCTOR #1 for reading from file
         public SingleDevice()
         {
+
         }
 
         //CONSTRUCTOR #2, for manual device adding
@@ -45,11 +46,14 @@ namespace Menekki_0._3
 
         public void AddNewDevice()
         {
-            do // ask NAME until input is not empty
+            
+            Console.WriteLine("Anna laitteelle nimi: ");
+            _name = Console.ReadLine();
+            if (_name == "")
             {
-                Console.WriteLine("Anna laitteelle nimi: ");
-                _name = Console.ReadLine();
-            } while (_name == "");
+                // if user gives empty name, return and delete constructor-created (empty) device from the list
+                return;
+            }
 
             Console.Clear();
             _components.ListComponents();
@@ -60,29 +64,38 @@ namespace Menekki_0._3
 
             do
             {
+                // ask user components till input is empty
                 Console.Write("Anna komponentin id: ");
                 userInput = Console.ReadLine();
                 int.TryParse(userInput, out ID);
 
+                // test if user inputted id-number is between the list's id-range
                 if (ID >= _components.GetCompListFirstID() && ID <= _components.GetCompListLastID())
                 {
                     Console.WriteLine($"Lisätään komponentti: {_components.GetComponentNameByID(ID)}");
                     Console.Write("Anna kappalemäärä: ");
                     userInput = Console.ReadLine();
                     int.TryParse(userInput, out PCS);
+
+                    // use helper class to store both (id & pcs) values into next available list cell
                     DeviceComps.Add(new IdAndAmount(ID, PCS));
                 }
+                // test if user inputted id-number outside the list's id-range
                 else if (ID < _components.GetCompListFirstID() || ID > _components.GetCompListLastID())
                 {
+                    if (userInput == "")
+                    {
+                        Console.WriteLine("Poistutaan");
+                    }
                     Console.WriteLine("Epäkelpo id.\n");
                 }
 
             } while (userInput != "");
-            Console.WriteLine("Poistutaan.");
            
         }
     }
-    // helper class to keep two values inside list (=DeviceComps)
+    // helper class to store valuepairs inside list (=DeviceComps)
+    // i was suppose to use Dictionary, but had some problems with serializing it, so i made new class instead.
     public class IdAndAmount
     {
         private int _componentID;

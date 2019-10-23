@@ -27,7 +27,7 @@ namespace Menekki_0._3
 
         //METHODS
 
-        private void ReadDevices()
+        private void ReadDevices() // read devices from Laitteet.xml
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Menekki_0._3
             }
         }
 
-        public void ListDevices()
+        public void ListDevices() // print out device info list, including components
         {
             if (DeviceList.Count() == 0)
             {
@@ -83,24 +83,39 @@ namespace Menekki_0._3
             }
         }
 
-        public void NewDevice()
+        public void NewDevice() // creates new device and asks components for it
         {
             // if list is empty, create new component with id-number 1
+            // add _components with new device, so they could link together
             if (!DeviceList.Any())
             {
                 DeviceList.Add(new SingleDevice(1, _components));
+                // if new device creation returns with empty name, delete the device from the list
+                // because that means user did not want to create it after all
+                if (DeviceList[0].Name == "")
+                {
+                    DeviceList.RemoveAll(SingleComponent => SingleComponent.Name == "");
+                }
                 SaveDevices();
             }
             else
             {
                 // check last id in componentlist and add +1 to it
+                // add _components with new device, so they could link together
                 int lastIndex = DeviceList.Count - 1;
                 DeviceList.Add(new SingleDevice(DeviceList[lastIndex].Id + 1, _components));
+                if (DeviceList[lastIndex+1].Name == "")
+                {
+                    // if new device creation returns with empty name, delete the device from the list
+                    // because that means user did not want to create it after all
+                    Console.Write("Perutaan laitteen luonti.");
+                    DeviceList.RemoveAll(SingleComponent => SingleComponent.Name == "");
+                }
                 SaveDevices();
             }
         }
 
-        public void DeleteDevice()
+        public void DeleteDevice() // deletes device from the list
         {
             Console.WriteLine("\n");
             ListDevices();
@@ -138,7 +153,7 @@ namespace Menekki_0._3
             }
         }
 
-        public void SaveDevices()
+        public void SaveDevices() // saves devices to Laitteet.xml
         {
             try
             {
@@ -161,31 +176,71 @@ namespace Menekki_0._3
 
         }
 
-        public void BuildDevice()
+        public void BuildDevice() // lets user get "shopping list" of components for specific device
         {
-            int i = 0;
-            foreach (var d in DeviceList)
+            try
             {
-                Console.WriteLine($"{DeviceList[i].Id}. {DeviceList[i].Name}");
-                i++;
+
+                int i = 0;
+                foreach (var d in DeviceList)
+                {
+                    Console.WriteLine($"{DeviceList[i].Id}. {DeviceList[i].Name}");
+                    i++;
+                }
+
+                Console.Write("\nAnna rakennettavan laitteen id: ");
+                int id = int.Parse(Console.ReadLine());
+                id--;
+                Console.WriteLine(DeviceList[id].Name);
+
+                foreach (var c in DeviceList[id].DeviceComps)
+                {
+                    Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
+                }
+
+                Console.Write("Montako rakennetaan? ");
+                int pcs = int.Parse(Console.ReadLine());
+
+                foreach (var c in DeviceList[id].DeviceComps)
+                {
+                    Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} * {pcs,2} = {c.ComponentAmount*pcs,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
+                    // TÄHÄN JATKOKSI TARKISTUKSET LÖYTYYKÖ KOMPONENTTEJA JA KUINKA PALJON
+                }
+                Console.WriteLine("\nTulostetaan varastosaldot: ");
+                Console.WriteLine($"-------------------------------------------------------");
+                Console.WriteLine($"TARVE                |      |            | PUUTTUU");
+                Console.WriteLine($"{pcs,3} laitteeseen      |  KPL | VARASTOSSA |   KPL");
+                Console.WriteLine($"-------------------------------------------------------");
+
+
+                foreach (var c in DeviceList[id].DeviceComps)
+                {
+                    Console.Write($"{_components.GetComponentNameByID(c.ComponentID),-20} |" +
+                        $"{(c.ComponentAmount*pcs).ToString().PadLeft(4)}  |");
+                    foreach (var d in _components.GetWholeComponentList())
+                    {
+                        if (_components.GetComponentNameByID(c.ComponentID) == d.Name)
+                        {
+                            Console.Write($"{(d.Pcs),4} kpl");
+                            if ((c.ComponentAmount * pcs) - (d.Pcs) > 0)
+                            {
+                                // component amount neede to build needed amount of devices
+                                Console.WriteLine($"    | {(c.ComponentAmount * pcs) - (d.Pcs),5} kpl");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"    |");
+                            }
+
+                        }
+                    }
+                }
+                Console.WriteLine("-------------------------------------------------------");
+
             }
-
-            Console.Write("\nAnna rakennettavan laitteen id: ");
-            int id = int.Parse(Console.ReadLine());
-            Console.WriteLine(DeviceList[id].Name);
-
-            foreach (var c in DeviceList[id].DeviceComps)
+            catch (Exception ex)
             {
-                Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
-            }
-
-            Console.Write("Montako rakennetaan? ");
-            int pcs = int.Parse(Console.ReadLine());
-
-            foreach (var c in DeviceList[id].DeviceComps)
-            {
-                Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} * {pcs,2} = {c.ComponentAmount*pcs,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
-                // TÄHÄN JATKOKSI TARKISTUKSET LÖYTYYKÖ KOMPONENTTEJA JA KUINKA PALJON
+                Console.WriteLine(ex.Message);
             }
 
         }

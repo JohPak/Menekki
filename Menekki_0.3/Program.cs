@@ -130,7 +130,7 @@ namespace Menekki_0._3 //8.10.2019
                                 break;
                             case ConsoleKey.D4:
                                     Console.Clear();
-                                Console.WriteLine("\nRakennetaan laite");
+                                Console.WriteLine("Rakennetaan laite");
                                     AllDevices.BuildDevice();
                                 break;
                             case ConsoleKey.D5:
@@ -150,9 +150,10 @@ namespace Menekki_0._3 //8.10.2019
                     loopMenu = false;
                     // closes the console window on Windows
                     Environment.Exit(0);
-            
-                    break;
+                        return;
 
+                        //break;
+           
 
                 }
             }
