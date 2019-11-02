@@ -121,7 +121,16 @@ namespace Menekki_0._3
                     }
                 }
             }
-        } 
+        }
+
+        public void DeleteComponentById(int id, int amountToDelete) // delete components by amount
+        {
+            //method takes component id and amount to be subtracted from stock as a parameters
+
+            // this line searches component by given id, and then subtracts given amount from it
+            ComponentList.Find(SingleComponent => SingleComponent.Id == id).Pcs -= amountToDelete;
+            SaveComponents();
+        }
 
         public void EditComponent() // lets user edit component information 
         {
@@ -133,7 +142,7 @@ namespace Menekki_0._3
             {
                 ListComponents();
 
-                Console.WriteLine("Anna muokattavan komponentin ID:");
+                Console.WriteLine("\nAnna muokattavan komponentin ID:");
                 string userInput = Console.ReadLine();
 
                 if (userInput != "")
@@ -160,6 +169,7 @@ namespace Menekki_0._3
                         Console.Write($"{ComponentList.Find(SingleComponent => SingleComponent.Id == editableId).Pcs} kpl --> ");
                         input = Console.ReadLine();
 
+                        // if input is not empty, save new pcs for the component
                         if (input != "")
                         {
                             ComponentList.Find(SingleComponent => SingleComponent.Id == editableId).Pcs = int.Parse(input);
@@ -168,6 +178,7 @@ namespace Menekki_0._3
                         Console.Write($"{ComponentList.Find(SingleComponent => SingleComponent.Id == editableId).Price} € --> ");
                         input = Console.ReadLine();
 
+                        // if input is not emty, save new price for the component
                         if (input != "")
                         {
                             ComponentList.Find(SingleComponent => SingleComponent.Id == editableId).Price = double.Parse(input);
@@ -175,6 +186,7 @@ namespace Menekki_0._3
                         Console.WriteLine();
                         ListComponents();
                         SaveComponents();
+                        Console.WriteLine();
                     }
                     else
                     {
@@ -229,7 +241,7 @@ namespace Menekki_0._3
             return ComponentList.Find(SingleComponent => SingleComponent.Id == id);
         }
 
-        public List<SingleComponent> GetWholeComponentList() //TURHA?
+        public List<SingleComponent> GetWholeComponentList()
         {
             return ComponentList;
         }

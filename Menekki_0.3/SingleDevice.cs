@@ -95,7 +95,7 @@ namespace Menekki_0._3
         }
     }
     // helper class to store valuepairs inside list (=DeviceComps)
-    // i was suppose to use Dictionary, but had some problems with serializing it, so i made new class instead.
+    // I was suppose to use Dictionary, but had some problems with serializing it, so I made new class instead.
     public class IdAndAmount
     {
         private int _componentID;

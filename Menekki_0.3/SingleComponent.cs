@@ -69,7 +69,22 @@ namespace Menekki_0._3
             do // ask PRICE until input is number and > 0
             {
                 Console.WriteLine("Anna kappalehinta €: (0.00) ");
-                isNumber = double.TryParse(Console.ReadLine(), out _price);
+                // isNumber = double.TryParse(Console.ReadLine(), out _price);
+
+                try
+                {
+                    string givenPrice = Console.ReadLine();
+                    // check if user has used comma instead of dot and replace it
+                    if (givenPrice.Contains(","))
+                    {
+                        givenPrice = givenPrice.Replace(",", ".");
+                    }
+                    isNumber = double.TryParse(givenPrice, out _price);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             } while (!isNumber || _price <= 0);
         }
     }

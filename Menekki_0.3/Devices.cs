@@ -16,6 +16,7 @@ namespace Menekki_0._3
         List<SingleDevice> DeviceList = new List<SingleDevice>();
         private static string pathAndFilename = "Laitteet.xml";
 
+        // brought-in list of components (from Components.cs)
         private Components _components;
 
         //CONSTRUCTOR
@@ -64,7 +65,7 @@ namespace Menekki_0._3
                 foreach (var d in DeviceList)
                 {
                     // print each device id and name
-                    Console.WriteLine($"Id {d.Id,3}. {d.Name}");
+                    Console.WriteLine($"Id {d.Id,2}. {d.Name}");
                     double deviceTotalPrice = 0;
                     // runs through each device's components
                     foreach (var c in d.DeviceComps)
@@ -75,8 +76,8 @@ namespace Menekki_0._3
                     // sum up the total cost of one device
                     deviceTotalPrice = deviceTotalPrice + (c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID));
                     }
-                    Console.WriteLine("Yhteensä " + deviceTotalPrice.ToString("F") + " €");
-                    Console.WriteLine("-----------------------------------------------");
+                    Console.WriteLine("\nYhteensä " + deviceTotalPrice.ToString("F") + " €");
+                    Console.WriteLine("-----------------------------------------------------------------");
                 }
                 Console.WriteLine();
 
@@ -176,7 +177,7 @@ namespace Menekki_0._3
 
         }
 
-        public void BuildDevice() // lets user get "shopping list" of components for specific device
+        public void BuildDevice() // lets user get "shopping list" of components for particular device
         {
             try
             {
@@ -188,61 +189,102 @@ namespace Menekki_0._3
                     i++;
                 }
 
-                Console.Write("\nAnna rakennettavan laitteen id: ");
-                int id = int.Parse(Console.ReadLine());
-                id--;
-                Console.WriteLine(DeviceList[id].Name);
+                int idToBuild;
 
-                foreach (var c in DeviceList[id].DeviceComps)
+                Console.Write("\nAnna rakennettavan laitteen id: ");
+                idToBuild = int.Parse(Console.ReadLine());
+                
+                idToBuild--;
+                Console.WriteLine(DeviceList[idToBuild].Name);
+
+                // print components of selected device (name, amount, price and total price of current component)
+                foreach (var c in DeviceList[idToBuild].DeviceComps)
                 {
                     Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
                 }
 
-                Console.Write("Montako rakennetaan? ");
-                int pcs = int.Parse(Console.ReadLine());
+                Console.Write("\nMontako laitetta rakennetaan? ");
+                int pcsToBuild = int.Parse(Console.ReadLine());
 
+                /* this was used to list device info multiplied with amount given by user
                 foreach (var c in DeviceList[id].DeviceComps)
                 {
+                    // lists component info of particular device's components
                     Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} * {pcs,2} = {c.ComponentAmount*pcs,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
-                    // TÄHÄN JATKOKSI TARKISTUKSET LÖYTYYKÖ KOMPONENTTEJA JA KUINKA PALJON
-                }
+                } */
+
                 Console.WriteLine("\nTulostetaan varastosaldot: ");
                 Console.WriteLine($"-------------------------------------------------------");
-                Console.WriteLine($"TARVE                |      |            | PUUTTUU");
-                Console.WriteLine($"{pcs,3} laitteeseen      |  KPL | VARASTOSSA |   KPL");
+                Console.WriteLine($" TARVE                |      |            |   PUUTTUU");
+                Console.WriteLine($" {pcsToBuild,3} laitteeseen      |  KPL | VARASTOSSA |     KPL");
                 Console.WriteLine($"-------------------------------------------------------");
 
+                // Lets create a helper list to store component id's.
+                // The list is used to decrease component amounts from stock.
+                List<int> ComponentsToDecrease = new List<int>();
 
-                foreach (var c in DeviceList[id].DeviceComps)
+                // lists device components multiplied with user inputted value
+                // if there are not enough components, lists what & how many are needed to complete the build
+                foreach (var c in DeviceList[idToBuild].DeviceComps) // run through selected device's components
                 {
-                    Console.Write($"{_components.GetComponentNameByID(c.ComponentID),-20} |" +
-                        $"{(c.ComponentAmount*pcs).ToString().PadLeft(4)}  |");
+                    //prints component name and amount * amount to be built
+                    Console.Write($" {_components.GetComponentNameByID(c.ComponentID),-20} |" +
+                        $"{(c.ComponentAmount*pcsToBuild).ToString().PadLeft(4)}  |");
+                    //store component's id in ComponentsToDecrease-list for later use
+                        ComponentsToDecrease.Add(c.ComponentID);
+
                     foreach (var d in _components.GetWholeComponentList())
                     {
                         if (_components.GetComponentNameByID(c.ComponentID) == d.Name)
                         {
                             Console.Write($"{(d.Pcs),4} kpl");
-                            if ((c.ComponentAmount * pcs) - (d.Pcs) > 0)
+                            // check if component lacks the amount needed
+                            if ((c.ComponentAmount * pcsToBuild) - (d.Pcs) > 0)
                             {
-                                // component amount neede to build needed amount of devices
-                                Console.WriteLine($"    | {(c.ComponentAmount * pcs) - (d.Pcs),5} kpl");
+                                // component amount needed to build needed amount of devices
+                                Console.WriteLine($"    | {(c.ComponentAmount * pcsToBuild) - (d.Pcs),5} kpl");
                             }
                             else
                             {
                                 Console.WriteLine($"    |");
                             }
-
                         }
                     }
                 }
                 Console.WriteLine("-------------------------------------------------------");
+                
+                // ask whether to build the devices and delete components from stock
+                Console.WriteLine($"\nKuitataanko {pcsToBuild} kpl * {DeviceList[idToBuild].Name} -laitteen saldot pois varastosta? ");
+                Console.WriteLine("1. Kyllä");
+                Console.WriteLine("2. Ei");
 
+                int shouldBeBuilt = int.Parse(Console.ReadLine());
+
+                if (shouldBeBuilt == 1)
+                {
+
+                    // Now it's time to use the helper list created earlier.
+                    // If user chooses to build a device, all components tied to that device are being subtracted from the stock
+
+                    for (int j = 0; j < ComponentsToDecrease.Count; j++)
+                    {
+                        foreach (var item in DeviceList[idToBuild].DeviceComps)
+                        {
+                            if (item.ComponentID == ComponentsToDecrease[j])
+                            {
+                                Console.WriteLine($"Vähennetään: {_components.GetComponentById(ComponentsToDecrease[j]).Name}, {item.ComponentAmount * pcsToBuild} kpl (jäi jäljelle {_components.GetComponentById(ComponentsToDecrease[j]).Pcs - item.ComponentAmount*pcsToBuild} kpl)");
+                                _components.DeleteComponentById(ComponentsToDecrease[j], item.ComponentAmount * pcsToBuild);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("\n");
             }
-
         }
     }
 }

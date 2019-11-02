@@ -13,16 +13,31 @@ namespace Menekki_0._3 //8.10.2019
             // helper variable to loop menu
             bool loopMenu = true;
 
-            //read components from file
+            // read components from file
             Components AllComponents = new Components();
 
-            //read devices from file
+            // read devices from file
             Devices AllDevices = new Devices(AllComponents);
+
+            // cool menu title :)
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine(@"                        _    _    _ ");
+            Console.WriteLine(@"  /\/\   ___ _ __   ___| | _| | _(_)");
+            Console.WriteLine(@" /    \ / _ \ '_ \ / _ \ |/ / |/ / |");
+            Console.WriteLine(@"/ /\/\ \  __/ | | |  __/   <|   <| |");
+            Console.WriteLine(@"\/    \/\___|_| |_|\___|_|\_\_|\_\_| v. 0.04");
+            Console.WriteLine(@"----------------------------------------------");
+            Console.WriteLine();
+
+            Console.ResetColor();
+
+
+
 
             while (loopMenu)
             {
                 // MAIN MENU
-                Console.WriteLine("**** MENEKKI v0.03 ****");
+                //Console.WriteLine(" * *** MENEKKI v0.03 ****");
                 Console.WriteLine("1. Komponentit");
                 Console.WriteLine("2. Laitteet");
                 Console.WriteLine("3. Poistu");
@@ -98,8 +113,8 @@ namespace Menekki_0._3 //8.10.2019
                     case ConsoleKey.D2:
                     Console.Clear();
 
-                    do
-                    {
+                        do
+                        {
 
                         // DEVICE MENU
                         Console.WriteLine("LAITTEET");
@@ -109,52 +124,49 @@ namespace Menekki_0._3 //8.10.2019
                         Console.WriteLine("4. Rakenna laite");
                         Console.WriteLine("5. Päävalikkoon");
 
-                        subChoice = Console.ReadKey().Key;
-                        switch (subChoice)
-                        {
-                            case ConsoleKey.D1:
-                                Console.Clear();
-                                Console.WriteLine("Listataan laitteet");
-                                Console.WriteLine();
-                                AllDevices.ListDevices();
-                                break;
-                            case ConsoleKey.D2:
-                                Console.Clear();
-                                Console.WriteLine("Lisätään laite");
-                                AllDevices.NewDevice();
-                                Console.WriteLine("\n");
-                                break;
-                            case ConsoleKey.D3:
-                                Console.WriteLine("Poista laite");
-                                    AllDevices.DeleteDevice();
-                                break;
-                            case ConsoleKey.D4:
+                            subChoice = Console.ReadKey().Key;
+                            switch (subChoice)
+                            {
+                                case ConsoleKey.D1:
                                     Console.Clear();
-                                Console.WriteLine("Rakennetaan laite");
-                                    AllDevices.BuildDevice();
-                                break;
-                            case ConsoleKey.D5:
-                                Console.Clear();
-                                break;
-                                default:
-                                Console.Clear();
-                                break;
-                        }
+                                    Console.WriteLine("Listataan laitteet");
+                                    Console.WriteLine();
+                                    AllDevices.ListDevices();
+                                    break;
+                                case ConsoleKey.D2:
+                                    Console.Clear();
+                                    Console.WriteLine("Lisätään laite");
+                                    AllDevices.NewDevice();
+                                    Console.WriteLine("\n");
+                                    break;
+                                case ConsoleKey.D3:
+                                    Console.WriteLine("Poista laite");
+                                        AllDevices.DeleteDevice();
+                                    break;
+                                case ConsoleKey.D4:
+                                        Console.Clear();
+                                    Console.WriteLine("Rakennetaan laite");
+                                        AllDevices.BuildDevice();
+                                    break;
+                                case ConsoleKey.D5:
+                                    Console.Clear();
+                                    break;
+                                    default:
+                                    Console.Clear();
+                                    break;
+                                    
+                            }
+                            break;
+
+                        } while (subChoice != ConsoleKey.D5);
                         break;
 
-                    } while (subChoice != ConsoleKey.D5);
-                    break;
-
-                    default: // QUIT PROGRAM
-                    Console.WriteLine("Heippa!");
-                    loopMenu = false;
-                    // closes the console window on Windows
-                    Environment.Exit(0);
+                        default: // QUIT PROGRAM
+                        Console.WriteLine("Heippa!");
+                        loopMenu = false;
+                        // closes the console window on Windows
+                        Environment.Exit(0);
                         return;
-
-                        //break;
-           
-
                 }
             }
         }
