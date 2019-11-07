@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<ArrayOfSingleComponent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SingleComponent>
+    <Id>1</Id>
+    <Name>mutteri</Name>
+    <Pcs>21</Pcs>
+    <Price>0.25</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>2</Id>
+    <Name>ruuvi</Name>
+    <Pcs>148</Pcs>
+    <Price>0.15</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>3</Id>
+    <Name>korokeholkki</Name>
+    <Pcs>110</Pcs>
+    <Price>2.59</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>4</Id>
+    <Name>prikka 15 mm</Name>
+    <Pcs>468</Pcs>
+    <Price>0.13</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>5</Id>
+    <Name>prikka 25 mm</Name>
+    <Pcs>354</Pcs>
+    <Price>0.18</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>7</Id>
+    <Name>näyttö 27"</Name>
+    <Pcs>15</Pcs>
+    <Price>699</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>8</Id>
+    <Name>HDMI-kaapeli</Name>
+    <Pcs>51</Pcs>
+    <Price>9</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>9</Id>
+    <Name>näyttö 10"</Name>
+    <Pcs>12</Pcs>
+    <Price>129</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>10</Id>
+    <Name>reikälevy 30x50 mm</Name>
+    <Pcs>147</Pcs>
+    <Price>2.35</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>12</Id>
+    <Name>pultti</Name>
+    <Pcs>179</Pcs>
+    <Price>0.75</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>14</Id>
+    <Name>McGyver klemmari</Name>
+    <Pcs>13</Pcs>
+    <Price>0.65</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>15</Id>
+    <Name>sinitarraa</Name>
+    <Pcs>94</Pcs>
+    <Price>2.79</Price>
+  </SingleComponent>
+  <SingleComponent>
+    <Id>16</Id>
+    <Name>jhgjhg</Name>
+    <Pcs>767</Pcs>
+    <Price>5656.67</Price>
+  </SingleComponent>
+</ArrayOfSingleComponent>
