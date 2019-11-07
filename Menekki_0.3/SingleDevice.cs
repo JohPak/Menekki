@@ -56,6 +56,7 @@ namespace Menekki_0._3
             }
 
             Console.Clear();
+            Console.WriteLine("KOMPONENTTIEN LISÄYS LAITTEELLE\n");
             _components.ListComponents();
 
             Console.WriteLine($"\nAnna laitteelle \"{_name}\" siihen kuuluvat komponentit ja niiden määrät. ");

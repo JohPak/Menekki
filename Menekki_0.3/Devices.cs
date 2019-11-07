@@ -193,12 +193,15 @@ namespace Menekki_0._3
 
                 Console.Write("\nAnna rakennettavan laitteen id: ");
                 idToBuild = int.Parse(Console.ReadLine());
-                
-                idToBuild--;
-                Console.WriteLine(DeviceList[idToBuild].Name);
+
+                // search DeviceList for user given id and return its index
+                int idTransformedToIndex = DeviceList.FindIndex(SingleDevice => SingleDevice.Id == idToBuild);
+
+                //idToBuild--;
+                Console.WriteLine(DeviceList[idTransformedToIndex].Name);
 
                 // print components of selected device (name, amount, price and total price of current component)
-                foreach (var c in DeviceList[idToBuild].DeviceComps)
+                foreach (var c in DeviceList[idTransformedToIndex].DeviceComps)
                 {
                     Console.WriteLine($"\t- {_components.GetComponentNameByID(c.ComponentID).PadRight(20, '.')} {c.ComponentAmount,3} kpl, {_components.GetComponentPriceById(c.ComponentID).ToString("F"),6} € (yht. {(c.ComponentAmount * _components.GetComponentPriceById(c.ComponentID)).ToString("F"),7} €)");
                 }
@@ -225,7 +228,7 @@ namespace Menekki_0._3
 
                 // lists device components multiplied with user inputted value
                 // if there are not enough components, lists what & how many are needed to complete the build
-                foreach (var c in DeviceList[idToBuild].DeviceComps) // run through selected device's components
+                foreach (var c in DeviceList[idTransformedToIndex].DeviceComps) // run through selected device's components
                 {
                     //prints component name and amount * amount to be built
                     Console.Write($" {_components.GetComponentNameByID(c.ComponentID),-20} |" +
@@ -254,7 +257,7 @@ namespace Menekki_0._3
                 Console.WriteLine("-------------------------------------------------------");
                 
                 // ask whether to build the devices and delete components from stock
-                Console.WriteLine($"\nKuitataanko {pcsToBuild} kpl * {DeviceList[idToBuild].Name} -laitteen saldot pois varastosta? ");
+                Console.WriteLine($"\nKuitataanko {pcsToBuild} kpl * {DeviceList[idTransformedToIndex].Name} -laitteen saldot pois varastosta? ");
                 Console.WriteLine("1. Kyllä");
                 Console.WriteLine("2. Ei");
 
@@ -268,8 +271,9 @@ namespace Menekki_0._3
 
                     for (int j = 0; j < ComponentsToDecrease.Count; j++)
                     {
-                        foreach (var item in DeviceList[idToBuild].DeviceComps)
+                        foreach (var item in DeviceList[idTransformedToIndex].DeviceComps)
                         {
+                            // if-statement is needed because otherwise loop is doing every subtract as many times as there are components in device
                             if (item.ComponentID == ComponentsToDecrease[j])
                             {
                                 Console.WriteLine($"Vähennetään: {_components.GetComponentById(ComponentsToDecrease[j]).Name}, {item.ComponentAmount * pcsToBuild} kpl (jäi jäljelle {_components.GetComponentById(ComponentsToDecrease[j]).Pcs - item.ComponentAmount*pcsToBuild} kpl)");
@@ -279,6 +283,18 @@ namespace Menekki_0._3
                         }
                     }
                 }
+            }
+            catch (System.ArgumentOutOfRangeException ex)
+            {
+                // exception message if user inputted id-number not included in the list
+                Console.WriteLine("Id:tä ei löydy listalta.\n");
+                BuildDevice();
+
+            }
+            catch (System.FormatException ex)
+            {
+                // if user input's letters or empty, exits method
+                Console.WriteLine("Syöte oli tyhjä tai muu kuin numero. Poistutaan.\n");
             }
             catch (Exception ex)
             {
