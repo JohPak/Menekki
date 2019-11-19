@@ -35,8 +35,10 @@ namespace Menekki_0._3
                 if (File.Exists(pathAndFilename))
                 {
                     XmlSerializer serializer = new XmlSerializer(DeviceList.GetType());
-                    using StreamReader sr = new StreamReader(pathAndFilename);
-                    DeviceList = (List<SingleDevice>)serializer.Deserialize(sr);
+                    using (StreamReader sr = new StreamReader(pathAndFilename))
+                    {
+                        DeviceList = (List<SingleDevice>)serializer.Deserialize(sr);
+                    }
                     // Console.WriteLine("Luettu komponentit tiedostosta.");
                 }
                 else throw new FileNotFoundException($"Tiedostoa {pathAndFilename} ei löydy.\n");

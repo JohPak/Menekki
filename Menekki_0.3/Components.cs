@@ -38,8 +38,10 @@ namespace Menekki_0._3
                 if (File.Exists(pathAndFilename))
                 {
                     XmlSerializer serializer = new XmlSerializer(ComponentList.GetType());
-                    using StreamReader sr = new StreamReader(pathAndFilename);
-                    ComponentList = (List<SingleComponent>)serializer.Deserialize(sr);
+                    using (StreamReader sr = new StreamReader(pathAndFilename))
+                    {
+                        ComponentList = (List<SingleComponent>)serializer.Deserialize(sr);
+                    }                    
                    // Console.WriteLine("Luettu komponentit tiedostosta.");
                 }
                 else throw new FileNotFoundException($"Tiedostoa {pathAndFilename} ei löydy.\n");
